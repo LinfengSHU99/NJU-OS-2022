@@ -28,7 +28,7 @@ void wait_key() {
     // keycode = io_read(AM_INPUT_KEYBRD).keycode;
     // key_status = io_read(AM_INPUT_KEYBRD).keydown; 
     ioe_read(AM_INPUT_KEYBRD, &event);
-    printf("%d\n", event.keycode);
+    // printf("%d\n", event.keycode);
     if (event.keydown == 1) {
       if (event.keycode == AM_KEY_ESCAPE) {
         halt(0);
