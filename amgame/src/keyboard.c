@@ -20,23 +20,20 @@ extern Ball ball;
 extern int w, h;
 
 void wait_key() {
-  int keycode = AM_KEY_NONE;
-  int key_status = 0;
-  // AM_INPUT_KEYBRD_T event = { .keycode = AM_KEY_NONE };
-  while (keycode == AM_KEY_NONE) {
+  // int keycode = AM_KEY_NONE;
+  // int key_status = 0;
+  AM_INPUT_KEYBRD_T event = { .keycode = AM_KEY_NONE };
+  while (event.keycode == AM_KEY_NONE) {
     // putstr("reach here\n");
-    keycode = io_read(AM_INPUT_KEYBRD).keycode;
-    key_status = io_read(AM_INPUT_KEYBRD).keydown; 
-    // ioe_read(AM_INPUT_KEYBRD, &event);
-    if (keycode != 0){
-      printf("%d\n", keycode);
-      printf("%d\n", key_status);
-    }
-    if (key_status == 1) {
-      if (keycode == AM_KEY_ESCAPE) {
+    // keycode = io_read(AM_INPUT_KEYBRD).keycode;
+    // key_status = io_read(AM_INPUT_KEYBRD).keydown; 
+    ioe_read(AM_INPUT_KEYBRD, &event);
+    printf("%d\n", event.keycode);
+    if (event.keydown == 1) {
+      if (event.keycode == AM_KEY_ESCAPE) {
         halt(0);
       }
-      switch (keycode) {
+      switch (event.keycode) {
         case AM_KEY_DOWN: ball.y = ball.y + 1 < h - 1 ? ball.y + 1 : ball.y; break;
         case AM_KEY_UP: ball.y = ball.y - 1 > 0 ? ball.y - 1 : ball.y; break;
         case AM_KEY_RIGHT: ball.x = ball.x + 1 < w - 1 ? ball.x + 1 : ball.x; break;
