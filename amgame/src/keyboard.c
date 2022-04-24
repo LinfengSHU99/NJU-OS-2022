@@ -23,7 +23,7 @@ void wait_key() {
   int keycode = AM_KEY_NONE;
   int key_status = 0;
   while (keycode == AM_KEY_NONE) {
-    putstr("reach here\n");
+    // putstr("reach here\n");
     keycode = io_read(AM_INPUT_KEYBRD).keycode;
     key_status = io_read(AM_INPUT_KEYBRD).keydown; 
     printf("%d\n", keycode);
