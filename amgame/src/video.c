@@ -1,7 +1,7 @@
 #include <game.h>
 
 #define SIDE 16
-static int w, h;
+int w, h;
 
 static void init() {
   AM_GPU_CONFIG_T info = {0};
@@ -31,4 +31,48 @@ void splash() {
       }
     }
   }
+}
+
+extern Ball ball;
+
+void draw_ball(uint32_t pixels[]) {
+  int center = ball.y * w + ball.x;
+  int cnt = 0;
+  for (int i = center - w - 1; cnt < 9; i++) {
+    if (cnt % 3 == 0 && cnt != 0) {
+      i = i + w - 3;
+    }
+    pixels[i] = 0xffffff;
+    cnt++;
+  }
+}
+
+void init_screen() {
+  init();
+  ball.x = w / 2;
+  ball.y = h / 2;
+  uint32_t pixels[w * h];
+  AM_GPU_FBDRAW_T event = {
+    .x = 0, .y = 0, .w = w, .h = h, .sync = 1,
+    .pixels = pixels,
+  };
+  for (int i = 0; i < w * h; i++) {
+    pixels[i] = 0x000000;
+  }
+  draw_ball(pixels);
+  ioe_write(AM_GPU_FBDRAW, &event);
+
+}
+
+void update_screen() {
+  uint32_t pixels[w * h];
+  AM_GPU_FBDRAW_T event = {
+    .x = 0, .y = 0, .w = w, .h = h, .sync = 1,
+    .pixels = pixels,
+  };
+  for (int i = 0; i < w * h; i++) {
+    pixels[i] = 0x000000;
+  }
+  draw_ball(pixels);
+  ioe_write(AM_GPU_FBDRAW, &event);
 }

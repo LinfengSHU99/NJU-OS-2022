@@ -15,3 +15,26 @@ void print_key() {
     puts("\n");
   }
 }
+
+extern Ball ball;
+extern int w, h;
+
+void wait_key() {
+  int keycode = AM_KEY_NONE;
+  int key_status = 0;
+  while (keycode == AM_KEY_NONE) {
+    keycode = io_read(AM_INPUT_KEYBRD).keycode;
+    key_status = io_read(AM_INPUT_KEYBRD).keydown; 
+    if (key_status == 1) {
+      if (keycode == AM_KEY_ESCAPE) {
+        halt(0);
+      }
+      switch (keycode) {
+        case AM_KEY_DOWN: ball.y = ball.y + 1 < h - 1 ? ball.y + 1 : ball.y; break;
+        case AM_KEY_UP: ball.y = ball.y - 1 > 0 ? ball.y - 1 : ball.y; break;
+        case AM_KEY_RIGHT: ball.x = ball.x + 1 < w - 1 ? ball.x + 1 : ball.x; break;
+        case AM_KEY_LEFT: ball.x = ball.x - 1 > 0 ? ball.x - 1 : ball.x; break;
+      } 
+    }
+  }
+}
