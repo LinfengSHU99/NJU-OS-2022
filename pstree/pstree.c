@@ -4,17 +4,18 @@
 #include <dirent.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <
 
 #define N 10000
 #define MAX_CHILDS 50
 
 typedef struct dirent dirent;
 typedef struct Node {
-  char name[20] = {0};
+  char name[20];
   __pid_t pid;
   __pid_t parent;
   __pid_t *childs;
-  int child_num = 0;
+  int child_num;
 } Node;
 
 Node *all_nodes;
@@ -27,8 +28,9 @@ int all_digit(char s[]) {
   return 1;
 }
 
-void get_info(Node* nodeptr) {
-  FILE *fp = fopen(strcat(strcat("/proc/", entry->d_name), "/status"), "r");
+void get_info(Node* nodeptr, dirent entry) {
+  nodeptr->child_num = 0;
+  FILE *fp = fopen(strcat(strcat("/proc/", entry.d_name), "/status"), "r");
   char temp[100];
   fscanf("Name:%s\n", nodeptr->name);
   int cnt = 4;
@@ -92,12 +94,12 @@ int show(int version, int show_pids, int numeric_sort) {
     size = N;
     memset(all_nodes, 0, sizeof(Node*) * size);
     DIR *proc = opendir("/proc");
-    assert(*proc);
+    assert(proc);
     dirent entry;
     while ((entry = readdir(proc)) != NULL) {
-      if (all_digit(entry->d_name) && entry->d_type == DT_DIR) {
+      if (all_digit(entry.d_name) && entry.d_type == DT_DIR) {
         Node node;
-        get_info(&node);
+        get_info(&node, entry);
         // __pid_t pid = get_pid(entry);
         // __pid_t ppid = get_ppid(entry);
         node.childs = (__pid_t*)malloc(sizeof(__pid_t) * MAX_CHILDS);
@@ -117,13 +119,13 @@ int show(int version, int show_pids, int numeric_sort) {
     }
     // construct tree, childs are ensured to be in order this way.
     for (int i = 0; i < size; i++) {
-      if (all_nodes[i] != NULL && all_nodes[i].parent != 1) {
+      if (all_nodes[i].pid != 0 && all_nodes[i].parent != 1) {
         add_child(all_nodes[i].parent, i);
       }
     }
     // print tree
     for (int i = 0; i < size; i++) {
-      if (all_nodes[i] != NULL && all_nodes[i].parent == 1) {
+      if (all_nodes[i].pid != 0 && all_nodes[i].parent == 1) {
         print_tree(i, 1);
       }
     }
