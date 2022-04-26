@@ -31,7 +31,7 @@ void get_info(Node* nodeptr, dirent entry) {
   nodeptr->child_num = 0;
   FILE *fp = fopen(strcat(strcat("/proc/", entry.d_name), "/status"), "r");
   char temp[100];
-  fscanf("Name:%s\n", nodeptr->name);
+  fscanf(fp, "Name:%s\n", nodeptr->name);
   int cnt = 4;
   while (cnt--) {
     fgets(temp, 99, fp);
