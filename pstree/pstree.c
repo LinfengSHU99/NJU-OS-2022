@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define N 10000
-#define MAX_CHILDS 100
+#define MAX_CHILDS 1000
 
 typedef struct dirent dirent;
 typedef struct Node {
@@ -41,41 +41,15 @@ void get_info(Node* nodeptr, dirent *entry) {
   fscanf(fp, "PPid:%d\n", &(nodeptr->parent));
   fclose(fp);
 }
-// __pid_t get_pid(dirent entry) {
-//   FILE *fp = fopen(strcat(strcat("/proc/", entry->d_name), "/status"), "r");
-//   char temp[100];
-//   int cnt = 5;
-//   __pid_t pid = 0;
-//   while (cnt--) {
-//     fgets(temp, 99, fp);
-//   }
-//   fscanf(fp, "Pid:%d", &pid)
-//   fclose(fp);
-//   return pid;
-
-// }
-
-// __pid_t get_ppid(dirent entry) {
-//   FILE *fp = fopen(strcat(strcat("/proc/", entry->d_name), "/status"), "r");
-//   char temp[100];
-//   int cnt = 6;
-//   __pid_t pid = 0;
-//   while (cnt--) {
-//     fgets(temp, 99, fp);
-//   }
-//   fscanf(fp, "PPid:%d", &pid)
-//   fclose(fp);
-//   return pid;
-// }
 
 void add_child(__pid_t ppid, __pid_t pid) {
   all_nodes[ppid].childs[all_nodes[ppid].child_num] = pid;
   all_nodes[ppid].child_num += 1;
-  if (all_nodes[ppid].child_num >= MAX_CHILDS) {
-    for (int i = 0; i < all_nodes[ppid].child_num; i++) {
-      printf("%d\n", all_nodes[ppid].childs[i]);
-    }
-  }
+  // if (all_nodes[ppid].child_num >= MAX_CHILDS) {
+  //   for (int i = 0; i < all_nodes[ppid].child_num; i++) {
+  //     printf("%d\n", all_nodes[ppid].childs[i]);
+  //   }
+  // }
   assert(all_nodes[ppid].child_num < MAX_CHILDS);
 }
 
