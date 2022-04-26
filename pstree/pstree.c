@@ -84,7 +84,7 @@ void print_tree(__pid_t pid, int depth) {
   }
 }
 
-int show(int version, int show_pids, int numeric_sort) {
+void show(int version, int show_pids, int numeric_sort) {
   if (version) {
     printf("My pstree\nVersion 1.0\n");
   }
@@ -95,7 +95,7 @@ int show(int version, int show_pids, int numeric_sort) {
     DIR *proc = opendir("/proc");
     assert(proc);
     dirent entry;
-    while ((entry = readdir(proc)) != NULL) {
+    while ((&entry = readdir(proc)) != NULL) {
       if (all_digit(entry.d_name) && entry.d_type == DT_DIR) {
         Node node;
         get_info(&node, entry);
