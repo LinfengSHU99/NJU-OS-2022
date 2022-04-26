@@ -97,7 +97,7 @@ void show(int version, int show_pids, int numeric_sort) {
     // print tree
     for (int i = 0; i < size; i++) {
       if (all_nodes[i].pid != 0 && all_nodes[i].parent == 1) {
-        print_tree(i, 1);
+        print_tree(i, 0);
       }
     }
   } 
