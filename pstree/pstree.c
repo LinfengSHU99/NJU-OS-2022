@@ -119,7 +119,7 @@ void show(int version, int show_pids, int numeric_sort) {
     }
     // construct tree, childs are ensured to be in order this way.
     for (int i = 0; i < size; i++) {
-      if (all_nodes[i].pid != 0 && all_nodes[i].parent != 1) {
+      if (all_nodes[i].pid != 0 && all_nodes[i].parent != 1 && all_nodes[i].parent != 0) {
         add_child(all_nodes[i].parent, i);
       }
     }
