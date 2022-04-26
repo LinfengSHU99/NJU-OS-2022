@@ -27,9 +27,9 @@ int all_digit(char s[]) {
   return 1;
 }
 
-void get_info(Node* nodeptr, dirent entry) {
+void get_info(Node* nodeptr, dirent *entry) {
   nodeptr->child_num = 0;
-  FILE *fp = fopen(strcat(strcat("/proc/", entry.d_name), "/status"), "r");
+  FILE *fp = fopen(strcat(strcat("/proc/", entry->d_name), "/status"), "r");
   char temp[100];
   fscanf(fp, "Name:%s\n", nodeptr->name);
   int cnt = 4;
@@ -94,9 +94,9 @@ void show(int version, int show_pids, int numeric_sort) {
     memset(all_nodes, 0, sizeof(Node*) * size);
     DIR *proc = opendir("/proc");
     assert(proc);
-    dirent entry;
-    while ((&entry = readdir(proc)) != NULL) {
-      if (all_digit(entry.d_name) && entry.d_type == DT_DIR) {
+    dirent *entry;
+    while ((entry = readdir(proc)) != NULL) {
+      if (all_digit(entry->d_name) && entry->d_type == DT_DIR) {
         Node node;
         get_info(&node, entry);
         // __pid_t pid = get_pid(entry);
