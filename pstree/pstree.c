@@ -79,21 +79,13 @@ void show(int version, int show_pids, int numeric_sort) {
       if (all_digit(entry->d_name) && entry->d_type == DT_DIR) {
         Node node;
         get_info(&node, entry);
-        // __pid_t pid = get_pid(entry);
-        // __pid_t ppid = get_ppid(entry);
         node.childs = (__pid_t*)malloc(sizeof(__pid_t) * MAX_CHILDS);
         while (node.pid >= size || node.parent >= size) {
           all_nodes = realloc(all_nodes, sizeof(Node) * (N + size));
           size += N;
         }
         all_nodes[node.pid] = node;
-        // if (all_nodes[pid] == NULL) {
-        //   Node node;
-        //   node.pid = pid;
-        //   node.parent = ppid;
-        //   node.childs = (__pid_t*)malloc(sizeof(__pid_t) * MAX_CHILDS);
-        //   all_nodes[pid] = node;
-        // }
+  
       }
     }
     // construct tree, childs are ensured to be in order this way.
@@ -120,13 +112,13 @@ int main(int argc, char *argv[]) {
     assert(argv[i]);
     printf("argv[%d] = %s\n", i, argv[i]);
     
-    if (strcmp(argv[i], "-p")) {
+    if (strcmp(argv[i], "-p") == 0) {
       show_pids = 1;
     }
-    else if (strcmp(argv[i], "-n")) {
+    else if (strcmp(argv[i], "-n") == 0) {
       numeric_sort = 1;
     }
-    else if (strcmp(argv[i], "-V")) version = 1;
+    else if (strcmp(argv[i], "-V") == 0) version = 1;
 
   }
   show(version, show_pids, numeric_sort);
