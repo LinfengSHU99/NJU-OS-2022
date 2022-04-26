@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define N 10000
-#define MAX_CHILDS 50
+#define MAX_CHILDS 200
 
 typedef struct dirent dirent;
 typedef struct Node {
