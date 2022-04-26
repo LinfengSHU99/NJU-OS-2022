@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define N 10000
-#define MAX_CHILDS 1000
+#define MAX_CHILDS 100
 
 typedef struct dirent dirent;
 typedef struct Node {
@@ -70,7 +70,8 @@ void get_info(Node* nodeptr, dirent *entry) {
 
 void add_child(__pid_t ppid, __pid_t pid) {
   all_nodes[ppid].childs[all_nodes[ppid].child_num] = pid;
-  all_nodes[ppid].child_num++;
+  all_nodes[ppid].child_num += 1;
+  if (all_nodes[ppid].child_num >= MAX_CHILDS) printf("%d\n", ppid);
   assert(all_nodes[ppid].child_num < MAX_CHILDS);
 }
 
