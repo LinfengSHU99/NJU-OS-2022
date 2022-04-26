@@ -71,7 +71,11 @@ void get_info(Node* nodeptr, dirent *entry) {
 void add_child(__pid_t ppid, __pid_t pid) {
   all_nodes[ppid].childs[all_nodes[ppid].child_num] = pid;
   all_nodes[ppid].child_num += 1;
-  if (all_nodes[ppid].child_num >= MAX_CHILDS) printf("%d\n", ppid);
+  if (all_nodes[ppid].child_num >= MAX_CHILDS) {
+    for (int i = 0; i < all_nodes[ppid].child_num; i++) {
+      printf("%d\n", all_nodes[ppid].childs[i]);
+    }
+  }
   assert(all_nodes[ppid].child_num < MAX_CHILDS);
 }
 
