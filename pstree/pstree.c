@@ -4,7 +4,6 @@
 #include <dirent.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include <
 
 #define N 10000
 #define MAX_CHILDS 50
