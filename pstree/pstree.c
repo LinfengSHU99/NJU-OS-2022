@@ -29,8 +29,9 @@ int all_digit(char s[]) {
 
 void get_info(Node* nodeptr, dirent *entry) {
   nodeptr->child_num = 0;
-  FILE *fp = fopen(strcat(strcat("/proc/", entry->d_name), "/status"), "r");
   char temp[100];
+  FILE *fp = fopen(strcat(strcat(strcpy(temp, "/proc/"), entry->d_name), "/status"), "r");
+  
   fscanf(fp, "Name:%s\n", nodeptr->name);
   int cnt = 4;
   while (cnt--) {
