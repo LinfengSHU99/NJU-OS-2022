@@ -44,7 +44,7 @@ __attribute__((constructor)) void init() {
   srand(666);
 }
 
-void remove(int id) {
+void remove_co(int id) {
   Node* p = head;
   while (p->next != NULL) {
     if (p->next->co->id == id) {
@@ -96,7 +96,7 @@ void co_wait(struct co *co) {
   co->mode = RUNNING;
   if (co != co_main){
     co->entry(co->arg);
-    remove(co->id);
+      remove_co(co->id);
   }
   else {
     return;
