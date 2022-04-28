@@ -22,7 +22,7 @@ typedef struct co {
   void *arg;
   jmp_buf buf;
   int mode;
-  u_int8_t stack[STACK_SIZE];
+  uint8_t stack[STACK_SIZE];
 }co;
 
 typedef struct Node {
@@ -106,13 +106,19 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
   return co_ptr;
 }
 
+void* get_sp(co *co) {
+    uint64_t offset = (uint64_t )co->stack % 16;
+    void* sp = co->stack + offset;
+    return sp;
+}
 void co_wait(struct co *co) {
   
   cur_co = co;
 
   co->mode = RUNNING;
   if (co != co_main){
-      stack_switch_call(co->stack, co->entry, co->arg);
+      void *sp = get_sp(co);
+      stack_switch_call(sp, co->entry, co->arg);
 //    co->entry(co->arg);
       remove_co(co->id);
   }
