@@ -36,7 +36,9 @@ co *co_main;
 co *cur_co;
 int cur_num = 0;
 int size = 0;
-jmp_buf main_buf;
+jmp_buf buf_stack[STACK_SIZE];
+int top = 0;
+
 __attribute__((constructor)) void init() {
   head = (Node*)malloc(sizeof(Node));
   head->co = NULL;
@@ -122,10 +124,10 @@ void co_wait(struct co *co) {
   co->mode = RUNNING;
   if (co != co_main){
       void *sp = get_sp(co);
-      int r = setjmp(main_buf);
+      int r = setjmp(buf_stack[top++]);
       if (r == 0) {
           stack_switch_call(sp, co->entry, co->arg);
-          longjmp(main_buf, 1);
+          longjmp(buf_stack[top--], 1);
       }
       else {
           remove_co(co->id);
