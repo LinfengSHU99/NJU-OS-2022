@@ -12,7 +12,7 @@
 extern int main();
 
 typedef struct co {
-  void*(*entry)(void*);
+  void(*entry)(void*);
   int id;
   char *name;
   void *arg;
@@ -102,7 +102,7 @@ void co_wait(struct co *co) {
 void co_yield() {
   setjmp(cur_co->buf);
   co *next_co = random_chose();
-  if (next_co->mode == RUNNING) longjmp(next_co->buf);
+  if (next_co->mode == RUNNING) longjmp(next_co->buf, 1);
   else if(next_co->mode == NOT_RUNNING) {
     co_wait(next_co);
   }
