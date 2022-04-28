@@ -55,14 +55,13 @@ void remove(int id) {
     else {
         p = p->next;
     }
-
   }
   size--;
 }
 
 
 co *random_chose() {
-  int index = rand() % size + 1;
+  int index = (rand() % size) + 1;
   Node* p = head;
   while (index--) {
     p = p->next;
