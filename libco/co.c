@@ -107,7 +107,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 }
 
 void* get_sp(co *co) {
-    uint64_t offset = co->stack;
+    uint64_t offset = (uint64_t )co->stack % 16;
     void* sp = co->stack + offset;
     return sp;
 }
