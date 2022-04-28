@@ -4,6 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <setjmp.h>
+#include <stdint.h>
 //#include <stddef.h>
 // #include <unistd.h>
 
@@ -51,7 +52,7 @@ static inline void stack_switch_call(void *sp, void *entry, void* arg) {
     asm volatile (
 #if __x86_64__
     "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
-    : : "b"((void*)sp), "d"(entry), "a"(arg) : "memory"
+    : : "b"((uintptr_t *)sp), "d"(entry), "a"(arg) : "memory"
 #else
     "movl %0, %%esp; movl %2, 4(%0); jmp *%1"
       : : "b"((u_int*)sp - 8), "d"(entry), "a"(arg) : "memory"
