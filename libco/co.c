@@ -22,7 +22,7 @@ typedef struct co {
   void *arg;
   jmp_buf buf;
   int mode;
-  uint8_t stack[STACK_SIZE];
+  uint8_t *stack
 }co;
 
 typedef struct Node {
@@ -66,6 +66,7 @@ void remove_co(int id) {
   Node* p = head;
   while (p->next != NULL) {
     if (p->next->co->id == id) {
+        free(p->next->co->stack);
       free(p->next->co);
       Node* t = p->next;
       p->next = p->next->next;
@@ -92,6 +93,7 @@ co *random_chose() {
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
   assert(cur_num < MAX_NUM);
   co* co_ptr = (co*)malloc(sizeof(co));
+  co_ptr->stack = (uint8_t*) malloc(sizeof(uint8_t) * STACK_SIZE);
   memset(co_ptr->stack, 0, STACK_SIZE);
   co_ptr->entry = func;
   co_ptr->id = cur_num;
