@@ -40,7 +40,7 @@ __attribute__((constructor)) void init() {
   co_main = co_start("main", (void*)main, NULL);
   cur_co = co_main;
   co_main->mode = RUNNING;
-  srand(1);
+  srand(2);
 }
 
 void remove(int id) {
