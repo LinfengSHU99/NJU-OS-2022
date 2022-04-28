@@ -22,7 +22,7 @@ typedef struct co {
   void *arg;
   jmp_buf buf;
   int mode;
-  uint8_t *stack
+  uint8_t *stack;
 }co;
 
 typedef struct Node {
