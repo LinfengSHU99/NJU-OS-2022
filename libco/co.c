@@ -22,20 +22,22 @@ typedef struct co {
 
 typedef struct Node {
   co* co;
-  Node* next;
+  struct Node* next;
 }Node;
 
 Node* head;
 Node* tail;
 co *co_main;
 co *cur_co;
+int cur_num = 0;
+int size = 0;
 
 __attribute__((constructor)) void init() {
   head = (Node*)malloc(sizeof(Node));
   head->co = NULL;
   head->next = NULL;
   tail = head;
-  co_main = co_start("main", main, NULL);
+  co_main = co_start("main", (void*)main, NULL);
   cur_co = co_main;
   co_main->mode = RUNNING;
   srand(1);
@@ -55,8 +57,6 @@ void remove(int id) {
   size--;
 }
 
-int cur_num = 0;
-int size = 0;
 
 co *random_chose() {
   int index = rand() % size + 1;
