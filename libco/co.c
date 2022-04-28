@@ -14,7 +14,7 @@ extern int main();
 typedef struct co {
   void(*entry)(void*);
   int id;
-  char *name;
+  char name[100];
   void *arg;
   jmp_buf buf;
   int mode;
