@@ -4,11 +4,13 @@
 #include <string.h>
 #include <assert.h>
 #include <setjmp.h>
+//#include <stddef.h>
 // #include <unistd.h>
 
 #define MAX_NUM 1000
 #define NOT_RUNNING 0
 #define RUNNING 1
+#define STACK_SIZE 64000
 
 extern int main();
 
@@ -19,6 +21,7 @@ typedef struct co {
   void *arg;
   jmp_buf buf;
   int mode;
+  u_int8_t stack[STACK_SIZE];
 }co;
 
 typedef struct Node {
@@ -42,6 +45,18 @@ __attribute__((constructor)) void init() {
   cur_co = co_main;
   co_main->mode = RUNNING;
   srand(666);
+}
+
+static inline void stack_switch_call(void *sp, void *entry, void* arg) {
+    asm volatile (
+//#if __x86_64__
+    "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
+    : : "b"((u_int*)sp), "d"(entry), "a"(arg) : "memory"
+//#else
+//    "movl %0, %%esp; movl %2, 4(%0); jmp *%1"
+//      : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg) : "memory"
+////#endif
+    );
 }
 
 void remove_co(int id) {
@@ -74,6 +89,7 @@ co *random_chose() {
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
   assert(cur_num < MAX_NUM);
   co* co_ptr = (co*)malloc(sizeof(co));
+  memset(co_ptr->stack, 0, STACK_SIZE);
   co_ptr->entry = func;
   co_ptr->id = cur_num;
   strcpy(co_ptr->name, name);
@@ -95,7 +111,8 @@ void co_wait(struct co *co) {
 
   co->mode = RUNNING;
   if (co != co_main){
-    co->entry(co->arg);
+      stack_switch_call(co->stack, co->entry, co->arg);
+//    co->entry(co->arg);
       remove_co(co->id);
   }
   else {
