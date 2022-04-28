@@ -100,13 +100,14 @@ void co_wait(struct co *co) {
 }
 
 void co_yield() {
+  if (cur_co == co_main) return;
   int r = setjmp(cur_co->buf);
   if (r == 0) {
     co *next_co = random_chose();
-    if (next_co->id == 0) next_co = cur_co;
+    if (next_co == co_main) next_co = cur_co;
     if (next_co->mode == RUNNING) longjmp(next_co->buf, 1);
     else if(next_co->mode == NOT_RUNNING) {
-    co_wait(next_co);
+      co_wait(next_co);
     }
   }
   else if (r == 1) return;
