@@ -52,7 +52,10 @@ void remove(int id) {
       p->next = p->next->next;
       free(t);
     }
-    p = p->next;
+    else {
+        p = p->next;
+    }
+
   }
   size--;
 }
