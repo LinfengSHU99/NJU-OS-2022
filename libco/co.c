@@ -50,7 +50,7 @@ __attribute__((constructor)) void init() {
 static inline void stack_switch_call(void *sp, void *entry, void* arg) {
     asm volatile (
 //#if __x86_64__
-    "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
+    "movq %0, %%esp; movq %2, %%edi; jmp *%1"
     : : "b"((void*)sp), "d"(entry), "a"(arg) : "memory"
 //#else
 //    "movl %0, %%esp; movl %2, 4(%0); jmp *%1"
