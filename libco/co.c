@@ -1,4 +1,5 @@
 #include "co.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -62,6 +63,7 @@ void remove(int id) {
 
 co *random_chose() {
   int index = (rand() % size) + 1;
+  printf("%d\n", index);
   Node* p = head;
   while (index--) {
     p = p->next;
