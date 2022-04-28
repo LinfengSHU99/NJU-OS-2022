@@ -49,13 +49,13 @@ __attribute__((constructor)) void init() {
 
 static inline void stack_switch_call(void *sp, void *entry, void* arg) {
     asm volatile (
-//#if __x86_64__
+#if __x86_64__
     "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
     : : "b"((u_int*)sp), "d"(entry), "a"(arg) : "memory"
-//#else
-//    "movl %0, %%esp; movl %2, 4(%0); jmp *%1"
-//      : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg) : "memory"
-////#endif
+#else
+    "movl %0, %%esp; movl %2, 4(%0); jmp *%1"
+      : : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg) : "memory"
+#endif
     );
 }
 
