@@ -114,8 +114,8 @@ void* get_sp(co *co) {
 #else
     uint32_t offset = (uint32_t)co->stack % 16;
 #endif
-    void* sp = co->stack + offset;
-    return sp;
+    void* sp = co->stack;
+    return sp + offset;
 }
 void co_wait(struct co *co) {
   
