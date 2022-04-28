@@ -50,7 +50,7 @@ __attribute__((constructor)) void init() {
   srand(666);
 }
 
-static inline void stack_switch_call(void *sp, void *entry, void* arg) {
+static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg) {
     asm volatile (
 #if __x86_64__
     "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
@@ -126,7 +126,7 @@ void co_wait(struct co *co) {
       void *sp = get_sp(co);
       int r = setjmp(buf_stack[top++]);
       if (r == 0) {
-          stack_switch_call(sp, co->entry, co->arg);
+          stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
           longjmp(buf_stack[top--], 1);
       }
       else {
