@@ -103,6 +103,7 @@ void co_yield() {
   int r = setjmp(cur_co->buf);
   if (r == 0) {
     co *next_co = random_chose();
+    if (next_co->id == 0) next_co = cur_co;
     if (next_co->mode == RUNNING) longjmp(next_co->buf, 1);
     else if(next_co->mode == NOT_RUNNING) {
     co_wait(next_co);
