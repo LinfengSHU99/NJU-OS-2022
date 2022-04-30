@@ -188,6 +188,7 @@ void co_yield() {
     else if(next_co->mode == NOT_RUNNING) {
 //      co_wait(next_co);
         cur_co = next_co;
+        cur_co->mode = RUNNING;
         void *sp = get_sp(next_co);
         stack_switch_call(sp, next_co->entry, (uintptr_t )next_co->arg);
         cur_co->entry(cur_co->arg);
