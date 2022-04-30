@@ -39,7 +39,8 @@ int cur_num = 0;
 int size = 0;
 jmp_buf buf_stack[STACK_SIZE];
 int top = 0;
-uintptr_t main_sp;
+//uintptr_t main_sp;
+int cnt = 0;
 __attribute__((constructor)) void init() {
   head = (Node*)malloc(sizeof(Node));
   head->co = NULL;
@@ -84,7 +85,9 @@ void remove_co(int id) {
 
 
 co *random_chose() {
-  int index = (rand() % size) + 1;
+//  int index = (rand() % size) + 1;
+    int index = cnt % 2 + 1;
+    cnt++;
   printf("%d\n", index);
   Node* p = head;
   while (index--) {
