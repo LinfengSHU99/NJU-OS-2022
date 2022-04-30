@@ -24,7 +24,7 @@ typedef struct co {
   jmp_buf buf;
   int mode;
   uint8_t stack[SIZE];
-  void* waiter_sp;
+  uintptr_t waiter_sp;
 }co;
 
 typedef struct Node {
@@ -105,7 +105,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
   memset(co_ptr->stack, 0, SIZE);
   co_ptr->entry = func;
   co_ptr->id = cur_num;
-  co_ptr->waiter_sp = NULL;
+  co_ptr->waiter_sp = 0;
   strcpy(co_ptr->name, name);
   co_ptr->arg = arg;
   co_ptr->mode = NOT_RUNNING;
@@ -154,7 +154,7 @@ void co_wait(struct co *co) {
       if (co != co_main){
           void *sp = get_sp(co);
 //          sp_stack[top++] = get_rsp();
-        co->waiter_sp = sp;
+        co->waiter_sp = get_rsp();
 //      int r = setjmp(buf_stack[top++]);
 //      if (r == 0) {
           stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
@@ -194,7 +194,7 @@ void co_yield() {
         cur_co = next_co;
         cur_co->mode = RUNNING;
         void *sp = get_sp(next_co);
-        cur_co->waiter_sp = sp;
+        cur_co->waiter_sp = get_rsp();
         stack_switch_call(sp, next_co->entry, (uintptr_t )next_co->arg);
         cur_co->entry(cur_co->arg);
         set_rsp((uintptr_t) cur_co->waiter_sp);
