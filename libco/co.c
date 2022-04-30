@@ -37,7 +37,8 @@ co *co_main;
 co *cur_co;
 int cur_num = 0;
 int size = 0;
-jmp_buf buf_stack[STACK_SIZE];
+//jmp_buf buf_stack[STACK_SIZE];
+uintptr_t sp_stack[SIZE];
 int top = 0;
 //uintptr_t main_sp;
 int cnt = 0;
@@ -125,6 +126,14 @@ void* get_sp(co *co) {
     void* sp = co->stack + STACK_SIZE;
     return sp + 16 - offset;
 }
+uintptr_t get_rsp() {
+    uintptr_t sp = 0;
+    asm volatile("movq %%rsp, %0" : "=r"(sp) : :);
+    return sp;
+}
+static void inline set_rsp(uintptr_t sp) {
+    asm volatile("movq %0, %%rsp" : : "r"(sp) :);
+}
 void co_wait(struct co *co) {
   
   cur_co = co;
@@ -132,15 +141,17 @@ void co_wait(struct co *co) {
   co->mode = RUNNING;
   if (co != co_main){
       void *sp = get_sp(co);
-      int r = setjmp(buf_stack[top++]);
-      if (r == 0) {
+      sp_stack[top++] = get_rsp();
+//      int r = setjmp(buf_stack[top++]);
+//      if (r == 0) {
           stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
           cur_co->entry(cur_co->arg);
-          longjmp(buf_stack[top--], 1);
-      }
-      else {
+          set_rsp(sp_stack[top--]);
+//          longjmp(buf_stack[top--], 1);
+//      }
+//      else {
           remove_co(co->id);
-      }
+//      }
 //      stack_switch_back();
 //    co->entry(co->arg);
 
