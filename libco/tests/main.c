@@ -33,6 +33,7 @@ static void test_1() {
     struct co *thd2 = co_start("thread-2", work, "Y");
 
     co_wait(thd1);
+    printf("reach here\n");
     co_wait(thd2);
 
 //    printf("\n");
