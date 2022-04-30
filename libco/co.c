@@ -115,7 +115,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 
 void* get_sp(co *co) {
 #if __x86_64__
-    uint64_t offset = (uintptr_t) co->stack + STACK_SIZE % 16;
+    uint64_t offset = (uintptr_t) (co->stack + STACK_SIZE) % 16;
 #else
     uint32_t offset = (uint32_t)co->stack % 16;
 #endif
