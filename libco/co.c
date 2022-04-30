@@ -144,10 +144,14 @@ void co_wait(struct co *co) {
   
   cur_co = co;
 
-  co->mode = RUNNING;
-  if (co != co_main){
-      void *sp = get_sp(co);
-      sp_stack[top++] = get_rsp();
+  if (co->mode == RUNNING) {
+      longjmp(co->buf, 1);
+  }
+  else if (co->mode == NOT_RUNNING) {
+      co->mode = RUNNING;
+      if (co != co_main){
+          void *sp = get_sp(co);
+          sp_stack[top++] = get_rsp();
 //      int r = setjmp(buf_stack[top++]);
 //      if (r == 0) {
           stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
@@ -162,10 +166,12 @@ void co_wait(struct co *co) {
 //      stack_switch_back();
 //    co->entry(co->arg);
 
+      }
+      else {
+          return;
+      }
   }
-  else {
-    return;
-  }
+
 }
 
 void co_yield() {
