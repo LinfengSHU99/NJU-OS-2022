@@ -151,7 +151,7 @@ void co_wait(struct co *co) {
 //      int r = setjmp(buf_stack[top++]);
 //      if (r == 0) {
           stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
-      set_rsp(sp_stack[--top]);
+//      set_rsp(sp_stack[--top]);
           cur_co->entry(cur_co->arg);
           set_rsp(sp_stack[--top]);
 //          longjmp(buf_stack[--top], 1);
