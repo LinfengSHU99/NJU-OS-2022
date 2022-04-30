@@ -179,7 +179,11 @@ void co_yield() {
         longjmp(next_co->buf, 1);
     }
     else if(next_co->mode == NOT_RUNNING) {
-      co_wait(next_co);
+//      co_wait(next_co);
+        cur_co = next_co;
+        void *sp = get_sp(next_co);
+        stack_switch_call(sp, next_co->entry, (uintptr_t )next_co->arg);
+        cur_co->entry(cur_co->arg);
     }
   }
   else if (r == 1) return;
