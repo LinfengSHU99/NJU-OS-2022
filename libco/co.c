@@ -12,6 +12,7 @@
 #define NOT_RUNNING 0
 #define RUNNING 1
 #define STACK_SIZE 64000
+#define SIZE STACK_SIZE + 16
 
 extern int main();
 
@@ -22,7 +23,7 @@ typedef struct co {
   void *arg;
   jmp_buf buf;
   int mode;
-  uint8_t stack[STACK_SIZE];
+  uint8_t stack[SIZE];
 }co;
 
 typedef struct Node {
@@ -96,7 +97,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
   assert(cur_num < MAX_NUM);
   co* co_ptr = (co*)malloc(sizeof(co));
 //  co_ptr->stack = (uint8_t*) malloc(sizeof(uint8_t) * STACK_SIZE);
-  memset(co_ptr->stack, 0, STACK_SIZE);
+  memset(co_ptr->stack, 0, SIZE);
   co_ptr->entry = func;
   co_ptr->id = cur_num;
   strcpy(co_ptr->name, name);
@@ -114,11 +115,11 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 
 void* get_sp(co *co) {
 #if __x86_64__
-    uint64_t offset = (uint64_t )co->stack % 16;
+    uint64_t offset = (uintptr_t) co->stack + STACK_SIZE % 16;
 #else
     uint32_t offset = (uint32_t)co->stack % 16;
 #endif
-    void* sp = co->stack;
+    void* sp = co->stack + STACK_SIZE;
     return sp + 16 - offset;
 }
 void co_wait(struct co *co) {
