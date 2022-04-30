@@ -38,7 +38,7 @@ int cur_num = 0;
 int size = 0;
 jmp_buf buf_stack[STACK_SIZE];
 int top = 0;
-
+uintptr_t main_sp;
 __attribute__((constructor)) void init() {
   head = (Node*)malloc(sizeof(Node));
   head->co = NULL;
@@ -147,6 +147,7 @@ void co_wait(struct co *co) {
 }
 
 void co_yield() {
+//    stack_switch_call(co->stack, co->entry, (uintptr_t )co->arg);
   if (cur_co == co_main) return;
   int r = setjmp(cur_co->buf);
   if (r == 0) {
