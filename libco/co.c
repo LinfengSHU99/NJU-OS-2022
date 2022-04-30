@@ -41,7 +41,7 @@ int size = 0;
 uintptr_t sp_stack[SIZE];
 int top = 0;
 //uintptr_t main_sp;
-int cnt = 0;
+int cnt = 1;
 __attribute__((constructor)) void init() {
   head = (Node*)malloc(sizeof(Node));
   head->co = NULL;
