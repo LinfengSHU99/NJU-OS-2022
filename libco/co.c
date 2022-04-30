@@ -126,7 +126,7 @@ void* get_sp(co *co) {
     void* sp = co->stack + STACK_SIZE;
     return sp + 16 - offset;
 }
-uintptr_t get_rsp() {
+static inline uintptr_t get_rsp() {
     uintptr_t sp = 0;
 #if __x86_64__
     asm volatile("movq %%rsp, %0;" : "=r"(sp) : :);
@@ -134,7 +134,7 @@ uintptr_t get_rsp() {
 #endif
     return sp;
 }
-static void inline set_rsp(uintptr_t sp) {
+static inline void set_rsp(uintptr_t sp) {
 #if __x86_64__
     asm volatile("movq %0, %%rsp;" : : "r"(sp) :);
 #else
