@@ -157,7 +157,10 @@ void co_yield() {
   if (r == 0) {
     co *next_co = random_chose();
     if (next_co == co_main) next_co = cur_co;
-    if (next_co->mode == RUNNING) longjmp(next_co->buf, 1);
+    if (next_co->mode == RUNNING) {
+        cur_co = next_co;
+        longjmp(next_co->buf, 1);
+    }
     else if(next_co->mode == NOT_RUNNING) {
       co_wait(next_co);
     }
