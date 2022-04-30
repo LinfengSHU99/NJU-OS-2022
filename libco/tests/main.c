@@ -16,7 +16,7 @@ static int get_count() {
 
 static void work_loop(void *arg) {
     const char *s = (const char*)arg;
-    for (int i = 0; i < 1; ++i) {
+    for (int i = 0; i < 100; ++i) {
         printf("%s%d  ", s, get_count());
         add_count();
         co_yield();
@@ -35,6 +35,7 @@ static void test_1() {
     co_wait(thd1);
     printf("reach here\n");
     co_wait(thd2);
+    printf("Test1 finished!!!!\n");
 
 //    printf("\n");
 }
