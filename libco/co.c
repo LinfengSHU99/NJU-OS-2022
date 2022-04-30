@@ -71,7 +71,7 @@ void remove_co(int id) {
   Node* p = head;
   while (p->next != NULL) {
     if (p->next->co->id == id) {
-//        free(p->next->co->stack);
+        free(p->next->co->stack);
       free(p->next->co);
       Node* t = p->next;
       p->next = p->next->next;
