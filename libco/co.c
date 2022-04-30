@@ -22,7 +22,7 @@ typedef struct co {
   void *arg;
   jmp_buf buf;
   int mode;
-  uint8_t *stack;
+  uint8_t stack[STACK_SIZE]
 }co;
 
 typedef struct Node {
@@ -95,7 +95,7 @@ co *random_chose() {
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
   assert(cur_num < MAX_NUM);
   co* co_ptr = (co*)malloc(sizeof(co));
-  co_ptr->stack = (uint8_t*) malloc(sizeof(uint8_t) * STACK_SIZE);
+//  co_ptr->stack = (uint8_t*) malloc(sizeof(uint8_t) * STACK_SIZE);
   memset(co_ptr->stack, 0, STACK_SIZE);
   co_ptr->entry = func;
   co_ptr->id = cur_num;
@@ -127,10 +127,10 @@ void co_wait(struct co *co) {
 
   co->mode = RUNNING;
   if (co != co_main){
-//      void *sp = get_sp(co);
+      void *sp = get_sp(co);
       int r = setjmp(buf_stack[top++]);
       if (r == 0) {
-          stack_switch_call(co->stack, co->entry, (uintptr_t )co->arg);
+          stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
           cur_co->entry(cur_co->arg);
           longjmp(buf_stack[top--], 1);
       }
