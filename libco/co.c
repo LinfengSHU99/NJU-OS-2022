@@ -156,7 +156,7 @@ void co_wait(struct co *co) {
 //          longjmp(buf_stack[--top], 1);
 //      }
 //      else {
-          remove_co(co->id);
+//          remove_co(co->id);
 //      }
 //      stack_switch_back();
 //    co->entry(co->arg);
