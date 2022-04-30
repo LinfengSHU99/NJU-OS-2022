@@ -128,11 +128,17 @@ void* get_sp(co *co) {
 }
 uintptr_t get_rsp() {
     uintptr_t sp = 0;
+#if __x86_64__
     asm volatile("movq %%rsp, %0;" : "=r"(sp) : :);
+#else
+#endif
     return sp;
 }
 static void inline set_rsp(uintptr_t sp) {
+#if __x86_64__
     asm volatile("movq %0, %%rsp;" : : "r"(sp) :);
+#else
+#endif
 }
 void co_wait(struct co *co) {
   
