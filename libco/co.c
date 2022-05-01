@@ -199,7 +199,7 @@ void co_yield() {
         cur_co->waiter_sp = get_rsp();
         stack_switch_call(sp, next_co->entry, (uintptr_t )next_co->arg);
         cur_co->entry(cur_co->arg);
-        set_rsp((uintptr_t) cur_co->waiter_sp);
+        set_rsp((uintptr_t) next_co->waiter_sp);
     }
   }
   else if (r == 1) return;
