@@ -127,6 +127,7 @@ void* get_sp(co *co) {
     void* sp = co->stack + STACK_SIZE;
     return sp + 16 - offset;
 }
+
 static inline uintptr_t get_rsp() {
     uintptr_t sp = 0;
 #if __x86_64__
@@ -135,12 +136,14 @@ static inline uintptr_t get_rsp() {
 #endif
     return sp;
 }
+
 static inline void set_rsp(uintptr_t sp) {
 #if __x86_64__
     asm volatile("movq %0, %%rsp;" : : "r"(sp) :);
 #else
 #endif
 }
+
 void co_wait(struct co *co) {
   if (co->mode == DEAD) {
       remove_co(co->id);
@@ -155,10 +158,10 @@ void co_wait(struct co *co) {
       if (co != co_main){
           void *sp = get_sp(co);
         co->waiter_sp = get_rsp();
-          stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
-          co->entry(cur_co->arg);
-            co->mode = DEAD;
-          set_rsp((uintptr_t)co->waiter_sp);
+        stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
+        co->entry(cur_co->arg);
+        co->mode = DEAD;
+        set_rsp((uintptr_t)co->waiter_sp);
       }
   }
     remove_co(co->id);
