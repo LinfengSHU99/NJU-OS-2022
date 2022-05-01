@@ -4,7 +4,7 @@
 #include <string.h>
 #include "co-test.h"
 
-int g_count = 200;
+int g_count = 0;
 
 static void add_count() {
     g_count++;
@@ -64,7 +64,7 @@ static void do_produce(Queue *queue) {
 
 static void producer(void *arg) {
     Queue *queue = (Queue*)arg;
-    for (int i = 0; i < 1; ) {
+    for (int i = 0; i < 100; ) {
         if (!q_is_full(queue)) {
             // co_yield();
             do_produce(queue);
