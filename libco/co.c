@@ -166,7 +166,7 @@ void co_wait(struct co *co) {
 //      set_rsp(sp_stack[--top]);
           cur_co->entry(cur_co->arg);
 //          set_rsp(sp_stack[--top]);
-            co->mode = DEAD;
+//            co->mode = DEAD;
           set_rsp((uintptr_t)co->waiter_sp);
 //          longjmp(buf_stack[--top], 1);
 //      }
