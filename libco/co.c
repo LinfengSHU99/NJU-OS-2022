@@ -148,7 +148,10 @@ static inline void set_rsp(uintptr_t sp) {
 #endif
 }
 void co_wait(struct co *co) {
-  
+  if (co->mode == DEAD) {
+      remove_co(co->id);
+      return;
+  }
   cur_co = co;
 
   if (co->mode == RUNNING) {
@@ -177,10 +180,11 @@ void co_wait(struct co *co) {
 //    co->entry(co->arg);
 
       }
-      else {
-          return;
-      }
+//      else {
+//          return;
+//      }
   }
+    remove_co(co->id);
 
 }
 
