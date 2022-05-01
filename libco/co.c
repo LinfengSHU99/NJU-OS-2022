@@ -88,7 +88,8 @@ void remove_co(int id) {
 
 
 co *random_chose() {
-  int index = (rand() % size) + 2;
+  int index = (rand() % size) + 1;
+  if (index == 1) index++;
 //    int index = cnt % 4 + 2;
 //    cnt++;
 //  printf("%d\n", index);
