@@ -27,6 +27,7 @@ typedef struct co {
 //  struct co* waiter;
 }co;
 
+// 保存已有协程的列表
 typedef struct Node {
   co* co;
   struct Node* next;
@@ -42,6 +43,7 @@ uintptr_t sp_stack[SIZE];
 int top = 0;
 int cnt = 1;
 
+// main函数启动前的准备工作
 __attribute__((constructor)) void init() {
   head = (Node*)malloc(sizeof(Node));
   head->co = NULL;
@@ -118,6 +120,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
   return co_ptr;
 }
 
+// 返回对齐后的栈地址，注意是stack[]数组的最后一个元素地址。(栈分配从地址空间的最大值开始往下递减)
 void* get_sp(co *co) {
 #if __x86_64__
     uint64_t offset = (uintptr_t) (co->stack + STACK_SIZE) % 16;
@@ -128,6 +131,7 @@ void* get_sp(co *co) {
     return sp + 16 - offset;
 }
 
+// 得到现在的$rsp
 static inline uintptr_t get_rsp() {
     uintptr_t sp = 0;
 #if __x86_64__
@@ -137,6 +141,7 @@ static inline uintptr_t get_rsp() {
     return sp;
 }
 
+// 将sp设置为$rsp
 static inline void set_rsp(uintptr_t sp) {
 #if __x86_64__
     asm volatile("movq %0, %%rsp;" : : "r"(sp) :);
@@ -177,6 +182,8 @@ void co_yield() {
         cur_co = next_co;
         longjmp(next_co->buf, 1);
     }
+    
+    // 注意使用next_co而不是cur_co
     else if(next_co->mode == NOT_RUNNING) {
         cur_co = next_co;
         next_co->mode = RUNNING;
