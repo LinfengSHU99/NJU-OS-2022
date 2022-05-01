@@ -11,6 +11,7 @@
 #define MAX_NUM 1000
 #define NOT_RUNNING 0
 #define RUNNING 1
+#define DEAD 2
 #define STACK_SIZE 64000
 #define SIZE STACK_SIZE + 16
 
@@ -163,8 +164,9 @@ void co_wait(struct co *co) {
 //      if (r == 0) {
           stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
 //      set_rsp(sp_stack[--top]);
-          cur_co->entry(cur_co->arg);
+          co->entry(cur_co->arg);
 //          set_rsp(sp_stack[--top]);
+            co->mode = DEAD;
           set_rsp((uintptr_t)co->waiter_sp);
 //          longjmp(buf_stack[--top], 1);
 //      }
@@ -201,6 +203,7 @@ void co_yield() {
         next_co->waiter_sp = get_rsp();
         stack_switch_call(sp, next_co->entry, (uintptr_t )next_co->arg);
         next_co->entry(cur_co->arg);
+        next_co->mode = DEAD;
         set_rsp((uintptr_t) next_co->waiter_sp);
     }
   }
