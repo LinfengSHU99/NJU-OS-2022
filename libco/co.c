@@ -89,7 +89,7 @@ void remove_co(int id) {
 
 co *random_chose() {
   int index = (rand() % size) + 1;
-//  if (index == 1) index++;
+  if (index == 1) index++;
 //    int index = cnt % 4 + 2;
 //    cnt++;
   printf("%d\n", index);
@@ -97,7 +97,7 @@ co *random_chose() {
   while (index--) {
     p = p->next;
   }
-//  printf("%s\n", p->co->name);
+  printf("%s\n", p->co->name);
   return p->co;
 }
 
