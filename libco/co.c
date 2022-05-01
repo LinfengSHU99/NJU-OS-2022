@@ -25,6 +25,7 @@ typedef struct co {
   int mode;
   uint8_t stack[SIZE];
   uintptr_t waiter_sp;
+  struct co* waiter;
 }co;
 
 typedef struct Node {
@@ -106,6 +107,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
   co_ptr->entry = func;
   co_ptr->id = cur_num;
   co_ptr->waiter_sp = 0;
+  co_ptr->waiter = NULL;
   strcpy(co_ptr->name, name);
   co_ptr->arg = arg;
   co_ptr->mode = NOT_RUNNING;
