@@ -92,12 +92,12 @@ co *random_chose() {
   if (index == 1) index++;
 //    int index = cnt % 4 + 2;
 //    cnt++;
-  printf("%d\n", index);
+//  printf("%d\n", index);
   Node* p = head;
   while (index--) {
     p = p->next;
   }
-  printf("%s\n", p->co->name);
+//  printf("%s\n", p->co->name);
   return p->co;
 }
 
