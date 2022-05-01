@@ -164,9 +164,9 @@ void co_wait(struct co *co) {
 //      if (r == 0) {
           stack_switch_call(sp, co->entry, (uintptr_t )co->arg);
 //      set_rsp(sp_stack[--top]);
-          cur_co->entry(cur_co->arg);
+          co->entry(cur_co->arg);
 //          set_rsp(sp_stack[--top]);
-//            co->mode = DEAD;
+            co->mode = DEAD;
           set_rsp((uintptr_t)co->waiter_sp);
 //          longjmp(buf_stack[--top], 1);
 //      }
