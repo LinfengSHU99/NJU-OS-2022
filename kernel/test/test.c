@@ -1,5 +1,5 @@
 #include "thread.h"
-
+#include <kernel.h>
 // extern 
 static void entry(int tid) { pmm->alloc(128); }
 static void goodbye()      { printf("End.\n"); }
