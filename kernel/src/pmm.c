@@ -1,5 +1,5 @@
 #ifdef TEST
-#include "test/common.h"
+#include "../test/common.h"
 #else
 #include <common.h>
 #endif
