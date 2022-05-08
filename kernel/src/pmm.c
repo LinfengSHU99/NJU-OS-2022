@@ -1,4 +1,9 @@
+#ifdef TEST
+#include "test/common.h"
+#else
 #include <common.h>
+#endif
+
 
 static void *kalloc(size_t size) {
   return NULL;
@@ -15,6 +20,7 @@ static void pmm_init() {
   printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
 }
 #else
+
 static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
