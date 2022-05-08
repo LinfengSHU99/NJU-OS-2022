@@ -1,3 +1,4 @@
+#ifndef TEST
 #include <common.h>
 
 static void os_init() {
@@ -15,3 +16,5 @@ MODULE_DEF(os) = {
   .init = os_init,
   .run  = os_run,
 };
+#else
+#endif
