@@ -33,7 +33,7 @@ void create(void *fn) {
   ++tptr;
 }
 
-void join() {
+void join(){
   for (int i = 0; i < NTHREAD; i++) {
     struct thread *t = &tpool[i];
     if (t->status == T_LIVE) {

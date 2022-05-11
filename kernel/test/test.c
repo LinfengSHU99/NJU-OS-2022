@@ -9,6 +9,7 @@ int main() {
   pmm->init();
   for (int i = 0; i < 4; i++)
     create(entry);
-  join(goodbye);
+  join();
+  goodbye();
   // pmm->alloc(128);
 }
