@@ -4,7 +4,7 @@
 // extern 
 static void entry(int tid) { 
   // if (tid % 2 == 0) {
-    sleep(1);
+    // sleep(1);
   // }
   void *p = pmm->alloc(128);
   printf("%p\n", p);
