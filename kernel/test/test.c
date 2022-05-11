@@ -3,9 +3,9 @@
 #include "common.h"
 // extern 
 static void entry(int tid) { 
-  if (tid % 2 == 0) {
+  // if (tid % 2 == 0) {
     sleep(1);
-  }
+  // }
   void *p = pmm->alloc(128);
   printf("%p\n", p);
   pmm->free(p);
