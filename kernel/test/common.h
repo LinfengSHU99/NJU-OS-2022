@@ -6,6 +6,9 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <kernel.h>
+#include <klib.h>
+#include <klib-macros.h>
 
 #define HEAP_SIZE 134217728
 
