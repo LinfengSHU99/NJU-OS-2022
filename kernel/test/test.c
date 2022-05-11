@@ -12,7 +12,7 @@ static void goodbye()      { printf("End.\n"); }
 
 int main() {
   pmm->init();
-  for (int i = 0; i < 50; i++)
+  for (int i = 0; i < 60; i++)
     create(entry);
   join();
   goodbye();
