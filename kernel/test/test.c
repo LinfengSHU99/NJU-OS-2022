@@ -5,12 +5,13 @@
 static void entry(int tid) { 
   void *p = pmm->alloc(128);
   printf("%p\n", p);
+  pmm->free(p);
  }
 static void goodbye()      { printf("End.\n"); }
 
 int main() {
   pmm->init();
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 50; i++)
     create(entry);
   join();
   goodbye();
