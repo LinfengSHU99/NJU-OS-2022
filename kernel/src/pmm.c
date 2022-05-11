@@ -59,7 +59,7 @@ static void *kalloc(size_t size) {
     }
     s = get_start(list[i].end, list[next].start, size, t);
     if (s != -1) {
-      printf("%lu  %d %d\n", s, t, s%t);
+      // printf("%lu  %d %d\n", s, t, s%t);
       assert (s % t == 0);
       int id = get_free_id();
       list[id].next = next;
