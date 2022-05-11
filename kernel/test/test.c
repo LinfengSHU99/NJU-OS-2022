@@ -5,6 +5,7 @@
 static void entry(int tid) { 
   void *p = pmm->alloc(128);
   printf("%p\n", p);
+  sleep(1);
   pmm->free(p);
  }
 static void goodbye()      { printf("End.\n"); }
