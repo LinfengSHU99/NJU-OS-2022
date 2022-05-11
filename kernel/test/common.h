@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <kernel.h>
 #include <assert.h>
+#include <stdatomic.h>
 
 // #include <klib.h>
 // #include <klib-macros.h>
@@ -19,7 +20,9 @@ typedef struct {
 } Area;
 
 Area heap;
-
+int atomic_xchg(int *addr, int newval) {
+  return atomic_exchange((int *)addr, newval);
+}
 // #define MODULE(mod) \
 //   typedef struct mod_##mod##_t mod_##mod##_t; \
 //   extern mod_##mod##_t *mod; \
