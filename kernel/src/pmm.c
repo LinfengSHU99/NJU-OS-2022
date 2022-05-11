@@ -59,6 +59,7 @@ static void *kalloc(size_t size) {
     }
     s = get_start(list[i].end, list[next].start, size, t);
     if (s != -1) {
+      assert (s % t == 0);
       int id = get_free_id();
       list[id].next = next;
       list[id].pre = i;
