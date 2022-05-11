@@ -1,11 +1,11 @@
-#M2-libco
-##What Is Coroutine?
+# M2-libco
+## What Is Coroutine?
 Coroutine has its own register state and stack, shares the same address space with other coroutines, just like what thread does.  
 However, there is a significant difference between coroutine and thread, which is the way of switching.  
 The switch of coroutines is all up to their user, through calling yield() function. The user has total control over coroutines.  
 In contrast, the OS decides when to switch threads, and that leads to a lot of concurrency problems.  
 
-##My Own Version of Libco
+## My Own Version of Libco
 Following jyy's [instruction](http://jyywiki.cn/OS/2022/labs/M2) of building a lightweight coroutine library, I built a ~~buggy but verified by jyy's test cases~~ coroutine library(x64 only currently, not handle main coroutine yet).  
 Here are some critical points spending me a lot of time, and I think it's necessary to give them a note here.  
 1. Stack Alignment  

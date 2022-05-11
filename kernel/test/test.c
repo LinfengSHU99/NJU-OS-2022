@@ -18,5 +18,4 @@ int main() {
     create(entry);
   join();
   goodbye();
-  // pmm->alloc(128);
 }
