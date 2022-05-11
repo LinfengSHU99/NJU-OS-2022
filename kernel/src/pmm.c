@@ -22,9 +22,11 @@ static int top = 0;
 
 int get_start(uintptr_t start, uintptr_t end, size_t size, uintptr_t t) {
   uintptr_t s = (uintptr_t)(heap.start);
-  while (s < start) {
-    s += t;
-  }
+  // while (s < start) {
+  //   s += t;
+  // }
+  int mod = start % t;
+  s = start + mod;
   if (end - s > size) {
     return s;
   }
