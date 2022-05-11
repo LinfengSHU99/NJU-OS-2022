@@ -27,7 +27,7 @@ uintptr_t get_start(uintptr_t start, uintptr_t end, size_t size, uintptr_t t) {
   // }
   int mod = start % t;
   s = start + mod;
-  if (end - s > size) {
+  if ((int)(end - s) > 0 && end -s > size) {
     return s;
   }
   return -1;
@@ -101,7 +101,7 @@ static void pmm_init() {
   list[0].next = 1;
   list[0].pre = -1;
   list[0].start = (uintptr_t)(heap.start);
-  list[0].end = (uintptr_t)(heap.end);
+  list[0].end = (uintptr_t)(heap.start);
   list[1].next = -1;
   list[1].pre = 0;
   list[1].start = (uintptr_t)(heap.end);
@@ -118,7 +118,7 @@ static void pmm_init() {
   list[0].next = 1;
   list[0].pre = -1;
   list[0].start = (uintptr_t)(heap.start);
-  list[0].end = (uintptr_t)(heap.end);
+  list[0].end = (uintptr_t)(heap.start);
   list[1].next = -1;
   list[1].pre = 0;
   list[1].start = (uintptr_t)(heap.end);
