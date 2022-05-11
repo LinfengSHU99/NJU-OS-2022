@@ -90,6 +90,7 @@ static void kfree(void *ptr) {
       list[pre].next = next;
       list[next].pre = pre;
     }
+    i = list[i].next;
   }
   atomic_xchg(&lock, 0);
 }
