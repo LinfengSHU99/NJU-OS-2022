@@ -21,7 +21,7 @@ int pool[NUM] = {0};
 static int top = 0;
 
 int get_start(uintptr_t start, uintptr_t end, size_t size, uintptr_t t) {
-  uintptr_t s = 0;
+  uintptr_t s = heap.start;
   while (s < start) {
     s += t;
   }
