@@ -96,6 +96,17 @@ static void pmm_init() {
   heap.start = ptr;
   heap.end   = ptr + HEAP_SIZE;
   printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
+  list[0].next = 1;
+  list[0].pre = -1;
+  list[0].start = (uintptr_t)(heap.start);
+  list[0].end = (uintptr_t)(heap.end);
+  list[1].next = -1;
+  list[1].pre = 0;
+  list[1].start = (uintptr_t)(heap.end);
+  list[1].end = (uintptr_t)(heap.end);
+  for (int i = 2; i < NUM; i++) {
+    pool[top++] = i;
+  }
 }
 #else
 
