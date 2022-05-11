@@ -51,9 +51,10 @@ static void *kalloc(size_t size) {
     assert(next != -1);
     uintptr_t t = 1;
     while (t < size) {
-      t << 1;
+      t = t << 1;
     }
-    if (s = get_start(list[i].end, list[next].start, size, t) != -1) {
+    s = get_start(list[i].end, list[next].start, size, t);
+    if (s != -1) {
       int id = get_free_id();
       list[id].next = next;
       list[id].pre = i;
@@ -66,7 +67,7 @@ static void *kalloc(size_t size) {
     i = next;
   }
   atomic_xchg(&lock, 0);
-  return s;
+  return (void*)s;
 }
 
 static void kfree(void *ptr) {
@@ -76,7 +77,7 @@ static void kfree(void *ptr) {
 
   }
   while (list[i].next != -1) {
-    if (list[i].start == ptr) {
+    if ((void*)(list[i].start) == ptr) {
       put_id(i);
       int pre = list[i].pre;
       int next = list[i].next;
@@ -100,13 +101,13 @@ static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
   list[0].next = 1;
-  list[0].pre = -1
-  list[0].start = heap.start;
-  list[0].end = heap.end;
+  list[0].pre = -1;
+  list[0].start = (uintptr_t)(heap.start);
+  list[0].end = (uintptr_t)(heap.end);
   list[1].next = -1;
   list[1].pre = 0;
-  list[1].start = heap.end;
-  list[1].end = heap.end;
+  list[1].start = (uintptr_t)(heap.end);
+  list[1].end = (uintptr_t)(heap.end);
   for (int i = 2; i < NUM; i++) {
     pool[top++] = i;
   }
