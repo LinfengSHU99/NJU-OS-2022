@@ -6,7 +6,9 @@
 
 #define NUM 1000
 int lock = 0;
-
+static int atomic_xchg(int *addr, int newval) {
+  return atomic_exchange((int *)addr, newval);
+}
 typedef struct Node {
   uintptr_t start;
   uintptr_t end;
