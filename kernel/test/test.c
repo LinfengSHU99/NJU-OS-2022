@@ -2,7 +2,10 @@
 // #include <kernel.h>
 #include "common.h"
 // extern 
-static void entry(int tid) { pmm->alloc(128); }
+static void entry(int tid) { 
+  void *p = pmm->alloc(128);
+  printf("%p\n", p);
+ }
 static void goodbye()      { printf("End.\n"); }
 
 int main() {
