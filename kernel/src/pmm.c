@@ -53,7 +53,7 @@ static void *kalloc(size_t size) {
     assert(next != -1);
     uintptr_t t = 1;
     while (t < size) {
-      t = t << 1;
+      t = t * 2; 
     }
     s = get_start(list[i].end, list[next].start, size, t);
     if (s != -1) {
