@@ -7,7 +7,8 @@ static void goodbye()      { printf("End.\n"); }
 
 int main() {
   pmm->init();
-  for (int i = 0; i < 1; i++)
-    create(entry);
-  join(goodbye);
+  // for (int i = 0; i < 1; i++)
+  //   create(entry);
+  // join(goodbye);
+  pmm->alloc(128);
 }
