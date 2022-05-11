@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <kernel.h>
+#include <assert.h>
+
 // #include <klib.h>
 // #include <klib-macros.h>
 
