@@ -21,9 +21,9 @@ typedef struct {
 } Area;
 
 Area heap;
-int atomic_xchg(int *addr, int newval) {
-  return atomic_exchange((int *)addr, newval);
-}
+// int atomic_xchg(int *addr, int newval) {
+//   return atomic_exchange((int *)addr, newval);
+// }
 #define MODULE(mod) \
   typedef struct mod_##mod##_t mod_##mod##_t; \
   extern mod_##mod##_t *mod; \
